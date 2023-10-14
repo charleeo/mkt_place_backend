@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Modules\Authentication\Http\Controllers\AuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +14,6 @@ use Modules\Authentication\Http\Controllers\AuthenticationController;
 |
 */
 
-Route::middleware('auth:api')->get('/authentication', function (Request $request) {
+Route::middleware('auth:api')->get('/core', function (Request $request) {
     return $request->user();
 });
-
-
-Route::get("/test", [AuthenticationController::class, "register"]);
