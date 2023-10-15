@@ -28,3 +28,10 @@ function write_log(array $logMsgArr, $logFile = 'log')
     $logMsg = json_encode($logMsgArr);
     error_log($logMsg . PHP_EOL . PHP_EOL, 3, $logFilename);
 }
+
+function secondsToTime($seconds)
+{
+    $dtF = new DateTime('@0');
+    $dtT = new DateTime("@$seconds");
+    return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+}

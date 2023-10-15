@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
             // write to log
             write_log(Logger::getLogData($request, $res, '404'));
             // return response
-            return response()->json($res, Response::HTTP_OK);
+            return response()->json($res, Response::HTTP_NOT_FOUND);
         }
 
         // handle all AuthorizationException
@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
             // write to log
             write_log(Logger::getLogData($request, $res, 'access denied'));
             // return response
-            return response()->json($res, Response::HTTP_OK);
+            return response()->json($res, Response::HTTP_UNAUTHORIZED);
         }
 
         return parent::render($request, $exception);

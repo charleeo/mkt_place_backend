@@ -3,8 +3,9 @@
 namespace App\Http\Configuration;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\Response;
+
 
 final class ValidationUtils
 {
@@ -44,7 +45,7 @@ final class ValidationUtils
         write_log(Logger::getLogData($request, $res, 'validation error'));
 
         // return response
-        return response()->json($res, Response::HTTP_OK);
+        return response()->json($res, Response::HTTP_BAD_REQUEST);
     }
 
     /**

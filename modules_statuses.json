@@ -1,4 +1,5 @@
 {
     "Authentication": true,
-    "Core": true
+    "Core": true,
+    "User": true
 }
