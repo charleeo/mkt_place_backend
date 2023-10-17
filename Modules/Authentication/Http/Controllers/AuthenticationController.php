@@ -6,6 +6,7 @@ use Core\Http\Controllers\Controller;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Modules\Authentication\Contracts\AuthenticationService;
+use Modules\Authentication\Facades\AuthenticationService as AuthenticationServiceFacades;
 use Modules\Authentication\Http\Requests\LoginValidationRequest;
 
 class AuthenticationController extends Controller
@@ -23,11 +24,10 @@ class AuthenticationController extends Controller
     public function __construct(AuthenticationService $service)
     {
         parent::__construct($service);
-        $this->service = $service;
     }
 
     public function login(LoginValidationRequest $request)
     {
-        return $this->service->login($request);
+        return AuthenticationServiceFacades::login($request);
     }
 }

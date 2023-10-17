@@ -41,54 +41,42 @@ class AuthenticationService extends Service implements AuthenticationServiceCont
         $responseMessage = '';
 
         try {
+            $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? "email" : "username";
 
-            // extract items from request payload
-            $credentials = request(['email', 'password', 'username']);
-
+            $request->merge([
+                $loginType => $request->login
+            ]);
+            $credentials = request([$loginType, 'password']);
             if ($this->hasTooManyLoginAttempts($request)) {
                 $this->fireLockoutEvent($request);
                 $responseMessage = $this->sendLockoutResponse($request);
                 $statusCode = Response::HTTP_TOO_MANY_REQUESTS;
             } else {
-
                 if (!Auth::attempt($credentials)) {
-                    // $this->maxAttempts = intval($this->maxAttempts)-1;
                     $responseMessage = "Invalid Credentials";
                     $this->incrementLoginAttempts($request);
                     $statusCode = 400;
                 } else {
-
-                    // get the authenticated user
                     $user = $request->user();
-
-                    // remember user?
                     if ($request->remember_me) {
                         Passport::personalAccessTokensExpireIn(Carbon::now()->addWeeks(config('token.remember_token_expires_in')));
                     }
-
-                    // create new auth token
                     $tokenResult = $user->createToken(config("token.secret"));
                     $token = $tokenResult->token;
-                    // save token
                     $token->save();
-
                     $user->save();
                     $user->application;
-
                     $responseData = [
                         'access_token' => $tokenResult->accessToken,
                         'token_type' => 'Bearer',
                         'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString(),
                         'user' => $user
                     ];
-
                     $responseMessage = 'Login successful';
                     $status = true;
                     $this->clearLoginAttempts($request);
                 }
             }
-
-            // authentication attempt 
         } catch (Throwable $e) {
             $responseMessage = "An error occurred";
             $error =  Logger::errorLog($e);
@@ -115,8 +103,5 @@ class AuthenticationService extends Service implements AuthenticationServiceCont
             $this->throttleKey($request)
         );
         return 'Maximum auth attempts exceeded. Please try again after ' . secondsToTime($seconds);
-        // return ValidationException::withMessages([
-        //     $this->username() => 'Maximum auth attempts exceeded. Please try again after ' . secondsToTime($seconds),
-        // ])->status(Response::HTTP_TOO_MANY_REQUESTS);
     }
 }

@@ -5,10 +5,9 @@ namespace Modules\User\Services;
 use Core\Services\Service;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Contracts\UserRepository;
-use Modules\User\Contracts\UserService as ContractsUserService;
-use Modules\User\Http\Requests\RegisterUserRequest;
+use Modules\User\Contracts\UserService as UserServiceContracts;
 
-class UserService extends Service implements ContractsUserService
+class UserService extends Service implements UserServiceContracts
 {
     /**
      * Create new instance of DeveloperService
@@ -29,5 +28,9 @@ class UserService extends Service implements ContractsUserService
         $data['password'] = Hash::make($data['password']);
         $user = $this->store($data);
         return response()->json(["data" => $user]);
+    }
+
+    public static function hashPassword()
+    {
     }
 }

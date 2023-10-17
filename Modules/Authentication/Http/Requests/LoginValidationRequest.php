@@ -16,8 +16,7 @@ class LoginValidationRequest extends FormRequest
         return [
             "password" => ['required', 'string'],
             "remember_me" => ['nullable', 'string'],
-            "email" => ['required_without:username', "email"],
-            "username" => ['required_without:email', "string"]
+            "login" => ['required', "string"],
         ];
     }
 
