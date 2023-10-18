@@ -22,4 +22,8 @@ Route::middleware('auth:api')->get('/authentication', function (Request $request
 Route::group(['prefix' => "auth"], function () {
 
     Route::post("/login", [AuthenticationController::class, "login"]);
+
+    Route::post("/send/reset/link", [AuthenticationController::class, "sendResetLink"])->name('password.sent');
+
+    Route::get("/reset/password", [AuthenticationController::class, "resetPassword"])->name('password.reset');
 });

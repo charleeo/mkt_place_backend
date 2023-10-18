@@ -27,7 +27,11 @@ class UserService extends Service implements UserServiceContracts
     {
         $data['password'] = Hash::make($data['password']);
         $user = $this->store($data);
-        return response()->json(["data" => $user]);
+        return response()->json([
+            "data" => $user,
+            "messsage" => "User created",
+            "status" => true
+        ]);
     }
 
     public static function hashPassword()

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Modules\Authentication\Contracts\AuthenticationService;
 use Modules\Authentication\Facades\AuthenticationService as AuthenticationServiceFacades;
 use Modules\Authentication\Http\Requests\LoginValidationRequest;
+use Modules\Authentication\Http\Requests\ResetPasswordLinkValidationRequest;
+use Modules\Authentication\Http\Requests\ResetPasswordValidationRequest;
 
 class AuthenticationController extends Controller
 {
@@ -29,5 +31,15 @@ class AuthenticationController extends Controller
     public function login(LoginValidationRequest $request)
     {
         return AuthenticationServiceFacades::login($request);
+    }
+
+    public function sendResetLink(ResetPasswordLinkValidationRequest $request)
+    {
+        return AuthenticationServiceFacades::sendPasswordResetEmail($request);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        return AuthenticationServiceFacades::resetPassword($request);
     }
 }
